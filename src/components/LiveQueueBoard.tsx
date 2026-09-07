@@ -17,7 +17,6 @@ import {
   ArrowRight,
   Ticket
 } from 'lucide-react';
-import { sounds } from '../utils/audio';
 import { NotificationManager } from '../utils/notifications';
 import { ticketMatchesSearchQuery } from '../utils/studentIdMatcher';
 
@@ -63,9 +62,6 @@ export const LiveQueueBoard: React.FC<LiveQueueBoardProps> = ({
       attendance: 'present',
       arrivedAt: ticket.arrivedAt || timeStr
     });
-
-    sounds.unlock();
-    sounds.playCallingChime();
 
     NotificationManager.sendPushNotification(
       ticket.id,

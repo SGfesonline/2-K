@@ -138,13 +138,13 @@ export function parseCSVToTickets(csvText: string): TicketRecord[] {
     } else if (cleanAttendance.includes('呼出') || cleanAttendance.includes('呼び出し') || cleanAttendance.includes('called')) {
       attendance = 'absent';
       queueStatus = 'called';
-    } else if (cleanAttendance.includes('問診') || cleanAttendance.includes('検査') || cleanAttendance.includes('interview')) {
+    } else if (cleanAttendance.includes('案内中') || cleanAttendance.includes('入場中') || cleanAttendance.includes('interview')) {
       attendance = 'absent';
       queueStatus = 'interview';
-    } else if (cleanAttendance.includes('採血') || cleanAttendance.includes('献血') || cleanAttendance.includes('donating')) {
+    } else if (cleanAttendance.includes('体験中') || cleanAttendance.includes('進行中') || cleanAttendance.includes('donating')) {
       attendance = 'absent';
       queueStatus = 'donating';
-    } else if (cleanAttendance.includes('休憩') || cleanAttendance.includes('resting')) {
+    } else if (cleanAttendance.includes('保留') || cleanAttendance.includes('resting')) {
       attendance = 'absent';
       queueStatus = 'resting';
     } else if (cleanAttendance.includes('キャンセル') || cleanAttendance.includes('cancel')) {

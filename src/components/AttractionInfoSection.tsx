@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import posterImage from '../assets/poster.jpg';
 import { 
   Rocket, 
   Compass, 
@@ -12,7 +13,6 @@ import {
   Maximize2, 
   X, 
   FileText, 
-  ArrowDownCircle,
   Image as ImageIcon
 } from 'lucide-react';
 
@@ -37,6 +37,9 @@ export const AttractionInfoSection: React.FC<AttractionInfoSectionProps> = ({
   const scrollToPoster = () => {
     posterRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
+
+  const pdfUrl = `${import.meta.env.BASE_URL || './'}poster.pdf`;
+  const posterSrc = posterImage || `${import.meta.env.BASE_URL || './'}poster.jpg`;
 
   return (
     <div className="relative z-10 w-full max-w-4xl mx-auto space-y-8">
@@ -249,7 +252,7 @@ export const AttractionInfoSection: React.FC<AttractionInfoSectionProps> = ({
               <span>全画面拡大</span>
             </button>
             <a
-              href="/poster.pdf"
+              href={pdfUrl}
               target="_blank"
               rel="noreferrer"
               className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-bold flex items-center gap-1.5 transition border border-slate-700"
@@ -268,7 +271,7 @@ export const AttractionInfoSection: React.FC<AttractionInfoSectionProps> = ({
             title="クリックしてポスターを全画面拡大"
           >
             <img
-              src="/poster.jpg"
+              src={posterSrc}
               alt="文化祭 2年K組 公式ポスター「今日、迷子になりました。～惑星朝日編～」"
               className="w-full h-full object-cover object-center transform group-hover:scale-102 transition duration-500"
             />
@@ -318,7 +321,7 @@ export const AttractionInfoSection: React.FC<AttractionInfoSectionProps> = ({
               </div>
               <div className="flex items-center gap-2">
                 <a
-                  href="/poster.pdf"
+                  href={pdfUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-cyan-300 flex items-center gap-1 transition"
@@ -338,7 +341,7 @@ export const AttractionInfoSection: React.FC<AttractionInfoSectionProps> = ({
 
             <div className="rounded-2xl overflow-hidden border border-cyan-500/40 shadow-2xl bg-black max-h-[84vh] overflow-y-auto">
               <img
-                src="/poster.jpg"
+                src={posterSrc}
                 alt="公式ポスター拡大"
                 className="w-full h-auto object-contain"
               />

@@ -270,14 +270,16 @@ export async function loginAdminWithScriptPassword(password: string): Promise<bo
   }
   
   if (typeof window !== 'undefined') {
-    sessionStorage.setItem('blood_donation_admin_auth', 'true');
-    localStorage.setItem('blood_donation_admin_auth', 'true');
+    sessionStorage.setItem('asahi_admin_auth', 'true');
+    localStorage.setItem('asahi_admin_auth', 'true');
   }
   return true;
 }
 
 export async function logoutAdmin(): Promise<void> {
   if (typeof window !== 'undefined') {
+    sessionStorage.removeItem('asahi_admin_auth');
+    localStorage.removeItem('asahi_admin_auth');
     sessionStorage.removeItem('blood_donation_admin_auth');
     localStorage.removeItem('blood_donation_admin_auth');
   }
@@ -288,7 +290,9 @@ export async function logoutAdmin(): Promise<void> {
 
 export function checkIsAdminLoggedIn(): boolean {
   if (typeof window === 'undefined') return false;
-  return sessionStorage.getItem('blood_donation_admin_auth') === 'true' || 
+  return sessionStorage.getItem('asahi_admin_auth') === 'true' || 
+         localStorage.getItem('asahi_admin_auth') === 'true' ||
+         sessionStorage.getItem('blood_donation_admin_auth') === 'true' || 
          localStorage.getItem('blood_donation_admin_auth') === 'true';
 }
 

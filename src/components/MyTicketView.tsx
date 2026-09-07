@@ -27,7 +27,6 @@ import {
   Send
 } from 'lucide-react';
 import { NotificationManager } from '../utils/notifications';
-import { sounds } from '../utils/audio';
 import { LoadingScreen } from './LoadingScreen';
 import { TicketIssueForm } from './TicketIssueForm';
 
@@ -146,7 +145,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
         timestamp: currentTicket.calledTimestamp || Date.now()
       };
 
-      sounds.playCallingChime();
       NotificationManager.sendCallNotification(currentTicket);
     } else {
       lastAlertRef.current = {
@@ -215,7 +213,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
         }
         setIsIssuingNew(false);
         setVerifyError(null);
-        sounds.playSuccess();
       } else {
         setVerifyError('お名前、またはパスワードが一致しませんでした。発行時に入力した代表者のお名前とパスワードをご確認ください。');
       }
@@ -304,7 +301,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
 
   const handleTestPush = async () => {
     if (!currentTicket) return;
-    sounds.unlock();
     await NotificationManager.sendCallNotification(currentTicket);
     setNotifSent(true);
     setTimeout(() => setNotifSent(false), 4000);
@@ -412,7 +408,7 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
                       setLookupName(e.target.value);
                       if (verifyError) setVerifyError(null);
                     }}
-                    placeholder="例: 山田 太郎"
+                    placeholder="お名前を入力"
                     className="w-full px-4 py-3 text-sm bg-slate-900/90 border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-hidden focus:border-cyan-400 transition"
                   />
                 </div>
@@ -432,7 +428,7 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
                         setLookupPassword(e.target.value);
                         if (verifyError) setVerifyError(null);
                       }}
-                      placeholder="発行時に設定した合言葉"
+                      placeholder="確認用パスワードを入力"
                       className="w-full pl-4 pr-11 py-3 text-sm bg-slate-900/90 border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-hidden focus:border-pink-400 transition font-mono"
                     />
                     <button

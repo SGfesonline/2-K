@@ -143,12 +143,6 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({
           </div>
         </form>
 
-        <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 text-center">
-          <p className="text-[11px] text-pink-300/90 font-mono">
-            初期パスコード: <strong className="text-white underline tracking-wider font-bold">asahi2026</strong> または <strong className="text-white underline font-bold">admin</strong>
-          </p>
-        </div>
-
         <p className="text-[10px] text-slate-500 text-center leading-relaxed font-mono">
           SYSTEM ENCRYPTION SECURED
         </p>

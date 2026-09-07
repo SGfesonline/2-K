@@ -15,7 +15,6 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { createFestivalTicket, TicketIssueInput } from '../utils/ticketGenerator';
-import { sounds } from '../utils/audio';
 
 interface TicketIssueFormProps {
   existingTickets: TicketRecord[];
@@ -78,7 +77,6 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
 
     setIsSubmitting(true);
     try {
-      sounds.unlock();
       const input: TicketIssueInput = {
         numberOfPeople: Math.max(1, numberOfPeople),
         representativeName: trimmedName,
@@ -91,7 +89,6 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
 
       const newTicket = createFestivalTicket(input, existingTickets);
       await onTicketCreated(newTicket);
-      sounds.playWarp();
     } catch (err) {
       console.error('Failed to issue ticket:', err);
       setError('整理券の発行に失敗しました。もう一度お試しください。');
@@ -190,7 +187,7 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
               setRepresentativeName(e.target.value);
               if (error) setError(null);
             }}
-            placeholder="例: 山田 太郎"
+            placeholder="お名前を入力"
             className="w-full px-4 py-3 text-sm bg-slate-900/90 border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-hidden focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition"
           />
         </div>
@@ -267,7 +264,7 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
                   <span>出席番号</span>
                   <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-pink-900/80 text-pink-200 border border-pink-500/40">必須</span>
                 </span>
-                <span className="text-slate-400 font-normal text-[11px]">半角数字 (例: 15)</span>
+                <span className="text-slate-400 font-normal text-[11px]">半角数字</span>
               </label>
               <div className="relative">
                 <input
@@ -280,7 +277,7 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
                     setAttendanceNumber(e.target.value);
                     if (error) setError(null);
                   }}
-                  placeholder="例: 15"
+                  placeholder="出席番号を入力"
                   className="w-full px-4 py-2.5 text-sm bg-slate-950 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-hidden focus:border-cyan-400 transition font-mono font-bold"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-cyan-400 font-medium">
@@ -310,7 +307,7 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
                 setAccessPassword(e.target.value);
                 if (error) setError(null);
               }}
-              placeholder="例: 1234 または 好きな言葉"
+              placeholder="パスワードを入力（3文字以上）"
               className="w-full px-4 py-3 text-sm bg-slate-900/90 border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-hidden focus:border-pink-400 focus:ring-1 focus:ring-pink-400 transition font-mono"
             />
             <button

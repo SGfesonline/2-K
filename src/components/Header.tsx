@@ -4,8 +4,6 @@ import {
   Users, 
   Clock, 
   FileSpreadsheet, 
-  Volume2, 
-  VolumeX, 
   User, 
   ClipboardCheck, 
   RefreshCw,
@@ -13,7 +11,6 @@ import {
   Radio,
   Sparkles
 } from 'lucide-react';
-import { sounds } from '../utils/audio';
 import { AdminTabType } from '../types';
 
 interface HeaderProps {
@@ -23,8 +20,6 @@ interface HeaderProps {
   setAdminTab: (tab: AdminTabType) => void;
   onOpenSpreadsheet: () => void;
   onOpenGuidelines?: () => void;
-  soundEnabled: boolean;
-  setSoundEnabled: (enabled: boolean) => void;
   notificationPermission?: NotificationPermission;
   onReqNotifications?: () => void;
   waitingCount: number;
@@ -45,8 +40,6 @@ export const Header: React.FC<HeaderProps> = ({
   adminTab,
   setAdminTab,
   onOpenSpreadsheet,
-  soundEnabled,
-  setSoundEnabled,
   waitingCount,
   callingCount,
   completedCount,
@@ -55,15 +48,6 @@ export const Header: React.FC<HeaderProps> = ({
   isResyncing = false,
   onManualResync,
 }) => {
-  const toggleSound = () => {
-    const next = !soundEnabled;
-    setSoundEnabled(next);
-    sounds.setEnabled(next);
-    if (next) {
-      sounds.playSuccess();
-    }
-  };
-
   return (
     <header className="sticky top-0 z-40 bg-[#070d24]/90 backdrop-blur-xl border-b border-cyan-500/25 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5">
@@ -123,7 +107,7 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
 
-          {/* 右側：待機カウント・音声・管理モード */}
+          {/* 右側：待機カウント・管理モード */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* 待ち状況バッジ */}
             <div className="hidden md:flex items-center gap-2 text-xs">
@@ -142,21 +126,6 @@ export const Header: React.FC<HeaderProps> = ({
                 <span className="font-bold text-emerald-200 font-mono">{completedCount}</span>
               </div>
             </div>
-
-            {/* 音声切替 */}
-            <button
-              type="button"
-              onClick={toggleSound}
-              className={`p-2 rounded-xl border transition cursor-pointer ${
-                soundEnabled 
-                  ? 'bg-cyan-950/60 text-cyan-300 border-cyan-500/40 hover:bg-cyan-900/60' 
-                  : 'bg-slate-900 text-slate-500 border-slate-800 hover:bg-slate-800'
-              }`}
-              title={soundEnabled ? '宇宙効果音: オン' : '宇宙効果音: オフ'}
-              aria-label="音声切替"
-            >
-              {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4 text-slate-500" />}
-            </button>
 
             {/* 管理者モード切替 */}
             <button

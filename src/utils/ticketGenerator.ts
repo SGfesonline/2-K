@@ -84,6 +84,3 @@ export function createFestivalTicket(
   };
 }
 
-// Backward compatibility alias
-export const createBloodDonationTicket = createFestivalTicket;
-

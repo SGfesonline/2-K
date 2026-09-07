@@ -7,7 +7,6 @@ import {
   loadTicketsFromStorage, 
   saveTicketsToStorage
 } from './utils/storage';
-import { sounds } from './utils/audio';
 import { NotificationManager } from './utils/notifications';
 import { 
   testConnection, 
@@ -41,7 +40,6 @@ export const App: React.FC = () => {
   const [isAdminMode, setIsAdminMode] = useState<boolean>(false);
   const [isAdminAuthOpen, setIsAdminAuthOpen] = useState<boolean>(false);
   const [adminTab, setAdminTab] = useState<AdminTabType>('queue');
-  const [soundEnabled, setSoundEnabled] = useState(true);
   const [isFirebaseConnected, setIsFirebaseConnected] = useState<boolean>(false);
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>(
@@ -133,24 +131,10 @@ export const App: React.FC = () => {
     });
   };
 
-  useEffect(() => {
-    const handleGesture = () => {
-      sounds.unlock();
-    };
-    window.addEventListener('click', handleGesture, { passive: true });
-    window.addEventListener('touchstart', handleGesture, { passive: true });
-    return () => {
-      window.removeEventListener('click', handleGesture);
-      window.removeEventListener('touchstart', handleGesture);
-    };
-  }, []);
-
   const handleRequestNotification = async () => {
-    sounds.unlock();
     const perm = await NotificationManager.requestPermission();
     setNotificationPermission(perm);
     if (perm === 'granted') {
-      sounds.playWarp();
       await NotificationManager.sendLocalNotification(
         '惑星朝日 宇宙ミッション通知設定完了',
         '搭乗のお呼出時にこちらの端末へアラートが届きます。',
@@ -165,7 +149,6 @@ export const App: React.FC = () => {
     saveTicketsToStorage(updated);
     try {
       await setFirestoreTicket(newTicket);
-      sounds.playWarp();
     } catch (err) {
       console.error('Failed to create ticket in Firestore:', err);
     }
@@ -240,8 +223,6 @@ export const App: React.FC = () => {
           adminTab={adminTab}
           setAdminTab={setAdminTab}
           onOpenSpreadsheet={() => setIsSpreadsheetOpen(true)}
-          soundEnabled={soundEnabled}
-          setSoundEnabled={setSoundEnabled}
           notificationPermission={notificationPermission}
           onReqNotifications={handleRequestNotification}
           waitingCount={waitingCount}

@@ -1,8 +1,7 @@
 import { NotificationLog, TicketRecord } from '../types';
-import { sounds } from './audio';
 
 export class NotificationManager {
-  private static STORAGE_KEY = 'blood_donation_notifications';
+  private static STORAGE_KEY = 'planet_asahi_notifications';
 
   public static async requestPermission(): Promise<NotificationPermission> {
     if (typeof window === 'undefined' || !('Notification' in window)) {
@@ -10,14 +9,12 @@ export class NotificationManager {
       return 'denied';
     }
     try {
-      sounds.unlock();
-
       const permission = await Notification.requestPermission();
       if (permission === 'granted') {
         await this.sendLocalNotification(
-          '献血整理券の通知設定が完了しました',
-          'お呼出の際にこちらの端末へお知らせします。',
-          'donation-setup-notification'
+          '搭乗整理券の呼出通知が設定されました',
+          '順番になりましたらこちらの端末へ通知が届きます。',
+          'asahi-setup-notification'
         );
       }
       return permission;
@@ -50,9 +47,9 @@ export class NotificationManager {
     }
 
     try {
-      const iconUrl = '/pwa-192x192.png';
-      const badgeUrl = '/favicon.png';
-      const notifTag = tag || 'donation-ticket-call';
+      const iconUrl = `${import.meta.env.BASE_URL || './'}pwa-192x192.png`;
+      const badgeUrl = `${import.meta.env.BASE_URL || './'}favicon.png`;
+      const notifTag = tag || 'asahi-ticket-call';
 
       const notifOptions: NotificationOptions = {
         body,
@@ -89,15 +86,10 @@ export class NotificationManager {
   }
 
   public static async sendCallNotification(ticket: TicketRecord): Promise<NotificationLog> {
-    const title = `献血バスへのお呼出（整理券 ${ticket.ticketNumber}番）`;
-    const body = `${ticket.name} 様、受付の順番になりました。食堂前の献血バスへお越しください。`;
+    const title = `【2年K組】お呼出（整理券 #${ticket.ticketNumber}）`;
+    const name = ticket.representativeName || ticket.name;
+    const body = `${name} 様、順番になりました！2年K組「今日、迷子になりました。～惑星朝日編～」入口へお越しください。`;
     const tag = `call-${ticket.id}`;
-
-    try {
-      sounds.playCallingChime();
-    } catch (e) {
-      console.warn('Calling chime error:', e);
-    }
 
     if (typeof window !== 'undefined' && 'vibrate' in navigator) {
       try {
@@ -111,7 +103,7 @@ export class NotificationManager {
       id: 'NOTIF-' + Date.now().toString(36) + Math.random().toString(36).substring(2, 5),
       ticketId: ticket.id,
       recipientEmail: ticket.email,
-      recipientName: ticket.name,
+      recipientName: name,
       title,
       body,
       sentAt: new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
