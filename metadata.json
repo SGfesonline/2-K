@@ -1,0 +1,6 @@
+{
+  "name": "今日、迷子になりました。～惑星朝日編～",
+  "description": "2年K組の教室が幻想的な宇宙空間に大変身！壊れた宇宙船を修理し危険な迷路を突破して地球へ帰還せよ。本格迷路×謎解き×映えるフォトスポットの宇宙ミッション整理券システム",
+  "requestFramePermissions": ["notifications"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

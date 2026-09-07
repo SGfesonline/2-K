@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Zen Maru Gothic', 'M PLUS Rounded 1c', sans-serif;
+    background-color: #040817;
+    color: #e2e8f0;
+    overflow-x: hidden;
+  }
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', monospace, sans-serif;
+}
+
+.font-cosmic-title {
+  font-family: 'M PLUS Rounded 1c', 'Zen Maru Gothic', sans-serif;
+}
+
+/* ポスター風ネオンピンク文字グロー */
+.neon-text-pink {
+  color: #ff2a85;
+  text-shadow: 0 0 10px rgba(255, 42, 133, 0.8),
+               0 0 20px rgba(255, 42, 133, 0.5),
+               0 0 40px rgba(255, 42, 133, 0.3);
+}
+
+.neon-text-cyan {
+  color: #00f0ff;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.8),
+               0 0 20px rgba(0, 240, 255, 0.5),
+               0 0 40px rgba(0, 240, 255, 0.3);
+}
+
+.neon-border-pink {
+  border-color: #ff2a85;
+  box-shadow: 0 0 15px rgba(255, 42, 133, 0.35);
+}
+
+.neon-border-cyan {
+  border-color: #00f0ff;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.35);
+}
+
+.cosmic-glass {
+  background: rgba(10, 18, 45, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.cosmic-glass-pink {
+  background: rgba(25, 12, 35, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 42, 133, 0.3);
+}
+
+/* 宇宙船浮遊アニメーション */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+.animate-space-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}

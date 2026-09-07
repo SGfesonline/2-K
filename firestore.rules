@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isValidTicket(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.ticketNumber is number && data.ticketNumber >= 1 && data.ticketNumber <= 100000
+        && data.name is string && data.name.size() >= 1 && data.name.size() <= 100
+        && (!('representativeName' in data) || (data.representativeName is string && data.representativeName.size() <= 100))
+        && (!('numberOfPeople' in data) || (data.numberOfPeople is number && data.numberOfPeople >= 1 && data.numberOfPeople <= 100))
+        && (!('grade' in data) || (data.grade is string && data.grade.size() <= 50))
+        && (!('className' in data) || (data.className is string && data.className.size() <= 50))
+        && (!('attendanceNumber' in data) || (data.attendanceNumber is string && data.attendanceNumber.size() <= 50))
+        && (!('accessPassword' in data) || (data.accessPassword is string && data.accessPassword.size() <= 100))
+        && (!('projectName' in data) || (data.projectName is string && data.projectName.size() <= 100))
+        && (!('kana' in data) || (data.kana is string && data.kana.size() <= 100))
+        && (!('email' in data) || (data.email is string && data.email.size() <= 200))
+        && (!('timeSlot' in data) || (data.timeSlot is string && data.timeSlot.size() <= 50))
+        && (!('scheduledDate' in data) || (data.scheduledDate is string && data.scheduledDate.size() <= 50))
+        && data.attendance in ['unattended', 'present', 'absent', 'completed']
+        && data.queueStatus in ['waiting', 'called', 'in_progress', 'on_hold', 'interview', 'donating', 'resting', 'done', 'absent']
+        && (!('attribute' in data) || (data.attribute is string && data.attribute.size() <= 100))
+        && (!('registeredAt' in data) || (data.registeredAt is string && data.registeredAt.size() <= 50))
+        && (!('arrivedAt' in data) || (data.arrivedAt is string && data.arrivedAt.size() <= 50))
+        && (!('calledAt' in data) || (data.calledAt is string && data.calledAt.size() <= 50))
+        && (!('calledTimestamp' in data) || data.calledTimestamp is number)
+        && (!('callCount' in data) || data.callCount is number)
+        && (!('completedAt' in data) || (data.completedAt is string && data.completedAt.size() <= 50))
+        && (!('notes' in data) || (data.notes is string && data.notes.size() <= 500));
+    }
+
+    function isValidSetting(settingId, data) {
+      return (settingId == 'spreadsheet_sync' && data.sheetUrl is string)
+        || (settingId == 'admin_config')
+        || (settingId == 'admin_auth')
+        || (settingId in ['spreadsheet_sync', 'admin_config', 'admin_auth']);
+    }
+
+    match /test/{testId} {
+      allow read, write: if isValidId(testId);
+    }
+
+    match /settings/{settingId} {
+      allow read: if isValidId(settingId);
+      allow write: if isValidId(settingId) && isValidSetting(settingId, incoming());
+    }
+
+    match /tickets/{ticketId} {
+      allow get, list: if true;
+      allow create: if isValidId(ticketId) && isValidTicket(incoming());
+      allow update: if isValidId(ticketId) && isValidTicket(incoming());
+      allow delete: if isValidId(ticketId);
+    }
+  }
+}

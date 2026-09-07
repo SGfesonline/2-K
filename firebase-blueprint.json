@@ -1,0 +1,140 @@
+{
+  "entities": {
+    "TicketRecord": {
+      "title": "TicketRecord",
+      "description": "School festival class project queue ticket record",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique ticket document ID",
+          "maxLength": 128
+        },
+        "ticketNumber": {
+          "type": "number",
+          "description": "Sequential ticket queue number"
+        },
+        "name": {
+          "type": "string",
+          "description": "Representative or guest name",
+          "maxLength": 100
+        },
+        "representativeName": {
+          "type": "string",
+          "description": "Representative student or person name",
+          "maxLength": 100
+        },
+        "numberOfPeople": {
+          "type": "number",
+          "description": "Number of participants in this group"
+        },
+        "grade": {
+          "type": "string",
+          "description": "School grade or attendee type (1年, 2年, 3年, 教職員, 保護者・一般)",
+          "maxLength": 50
+        },
+        "className": {
+          "type": "string",
+          "description": "Class name of representative (A組 - L組)",
+          "maxLength": 50
+        },
+        "attendanceNumber": {
+          "type": "string",
+          "description": "Attendance roll number of representative",
+          "maxLength": 50
+        },
+        "accessPassword": {
+          "type": "string",
+          "description": "Password set during issue to verify ownership",
+          "maxLength": 64
+        },
+        "projectName": {
+          "type": "string",
+          "description": "Name of the class project/attraction",
+          "maxLength": 100
+        },
+        "timeSlot": {
+          "type": "string",
+          "description": "Reserved time slot or target slot",
+          "maxLength": 50
+        },
+        "scheduledDate": {
+          "type": "string",
+          "description": "Scheduled date",
+          "maxLength": 50
+        },
+        "attendance": {
+          "type": "string",
+          "enum": ["unattended", "present", "absent", "completed"],
+          "description": "Attendance status"
+        },
+        "queueStatus": {
+          "type": "string",
+          "enum": ["waiting", "called", "in_progress", "interview", "donating", "resting", "done", "on_hold", "absent"],
+          "description": "Current queue status"
+        },
+        "registeredAt": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "arrivedAt": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "calledAt": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "calledTimestamp": {
+          "type": "number"
+        },
+        "callCount": {
+          "type": "number"
+        },
+        "completedAt": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 200
+        }
+      },
+      "required": ["id", "ticketNumber", "name", "queueStatus", "attendance"]
+    },
+    "AdminAuthConfig": {
+      "title": "AdminAuthConfig",
+      "description": "Hashed password and cryptographic salt for admin dashboard authentication",
+      "type": "object",
+      "properties": {
+        "salt": {
+          "type": "string",
+          "description": "Cryptographic salt hex string"
+        },
+        "hash": {
+          "type": "string",
+          "description": "SHA-256 hashed password with salt"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last password update"
+        }
+      },
+      "required": ["salt", "hash", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/tickets/{ticketId}": {
+      "schema": {
+        "$ref": "#/entities/TicketRecord"
+      },
+      "description": "Collection of festival class project tickets"
+    },
+    "/settings/{settingId}": {
+      "schema": {
+        "$ref": "#/entities/AdminAuthConfig"
+      },
+      "description": "Configuration settings and hashed authentication data"
+    }
+  }
+}
