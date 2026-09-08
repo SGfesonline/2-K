@@ -7,12 +7,11 @@ import {
   GraduationCap, 
   School, 
   Hash, 
-  Lock,
-  Eye,
-  EyeOff,
-  Sparkles, 
-  ArrowRight,
-  AlertCircle
+  Lock, 
+  Eye, 
+  EyeOff, 
+  ArrowRight, 
+  AlertCircle 
 } from 'lucide-react';
 import { createFestivalTicket, TicketIssueInput } from '../utils/ticketGenerator';
 
@@ -41,7 +40,6 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // 教職員・保護者・一般のときはクラスと出席番号を非表示にする
   const isStudent = grade === '1年' || grade === '2年' || grade === '3年';
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -99,7 +97,6 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-cyan-500/30 bg-[#09112d]/90 p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-6">
-      {/* 宇宙船ターミナルの装飾光 */}
       <div className="absolute top-0 right-0 w-48 h-48 bg-pink-500/10 rounded-full blur-2xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none" />
 
@@ -120,7 +117,6 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
       </div>
 
       <form onSubmit={handleSubmit} className="relative z-10 space-y-5 text-left">
-        {/* 1. 人数 */}
         <div className="space-y-2">
           <label className="block text-xs font-bold text-slate-200 flex items-center justify-between">
             <span className="flex items-center gap-1.5">
@@ -172,7 +168,6 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
           </div>
         </div>
 
-        {/* 2. 代表者名 */}
         <div className="space-y-1.5">
           <label className="block text-xs font-bold text-slate-200 flex items-center gap-1.5">
             <User className="w-4 h-4 text-cyan-400" />
@@ -192,7 +187,6 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
           />
         </div>
 
-        {/* 3. 学年・属性 */}
         <div className="space-y-2 pt-1 border-t border-slate-800">
           <label className="block text-xs font-bold text-slate-200 flex items-center justify-between">
             <span className="flex items-center gap-1.5">
@@ -222,10 +216,8 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
           </div>
         </div>
 
-        {/* 4. クラス & 出席番号 (生徒の場合のみ表示: 教職員・保護者・一般は非表示) */}
         {isStudent && (
           <div className="space-y-3 p-4 bg-slate-900/90 border border-cyan-500/30 rounded-2xl">
-            {/* クラス選択 (A〜L) */}
             <div className="space-y-1.5">
               <label className="block text-xs font-bold text-slate-200 flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
@@ -256,7 +248,6 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
               </div>
             </div>
 
-            {/* 出席番号 */}
             <div className="space-y-1.5 pt-2 border-t border-slate-800">
               <label className="block text-xs font-bold text-slate-200 flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
@@ -288,7 +279,6 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
           </div>
         )}
 
-        {/* 5. 発行時の確認用パスワード設定 */}
         <div className="space-y-1.5 pt-1 border-t border-slate-800">
           <label className="block text-xs font-bold text-slate-200 flex items-center justify-between">
             <span className="flex items-center gap-1.5">
@@ -324,7 +314,6 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
           </p>
         </div>
 
-        {/* エラー表示 */}
         {error && (
           <div className="p-3 bg-red-950/80 border border-red-500/40 text-red-200 text-xs rounded-2xl flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
@@ -332,7 +321,6 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
           </div>
         )}
 
-        {/* 発行ボタン */}
         <button
           type="submit"
           disabled={isSubmitting}
@@ -355,4 +343,3 @@ export const TicketIssueForm: React.FC<TicketIssueFormProps> = ({
     </div>
   );
 };
-

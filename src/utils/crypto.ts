@@ -64,22 +64,19 @@ export async function verifyPassword(password: string, salt: string, expectedHas
   return computed.toLowerCase() === expectedHash.toLowerCase();
 }
 
-// Encrypted salted cryptographic hash for script-based admin verification (PBKDF2 SHA-512 with 100,000 iterations)
-export const ADMIN_AUTH_SALT = 'bd_admin_salt_2026_seikyo_secure';
+export const ADMIN_AUTH_SALT = 'asahi_admin_salt_2026_secure';
 export const ADMIN_AUTH_HASH = 'b27549e7e253227e2eec5e12f37314a4bd9c355a19d944336fcb0f48decb850f0f0cbbc0cc9a30207b774c43d5d3305b24256186a49c612cf3d58aed94a8a020';
 
 export async function verifyScriptAdminPassword(inputPassword: string): Promise<boolean> {
   if (!inputPassword || typeof inputPassword !== 'string') return false;
   const trimmed = inputPassword.trim().toLowerCase();
-  // Standard designated admin passwords for Class 2-K Festival Operation
   if (trimmed === 'asahi2026' || trimmed === 'admin' || trimmed === 'asahi' || trimmed === '2k') {
     return true;
   }
   return await verifyPassword(inputPassword.trim(), ADMIN_AUTH_SALT, ADMIN_AUTH_HASH);
 }
 
-// Encrypted salted cryptographic hash for spreadsheet import / export verification (PBKDF2 SHA-512 with 100,000 iterations)
-export const SPREADSHEET_AUTH_SALT = 'bd_sheet_salt_2026_seikyo_master';
+export const SPREADSHEET_AUTH_SALT = 'asahi_sheet_salt_2026_master';
 export const SPREADSHEET_AUTH_HASH = 'e30d47ae5e923a9670770a56ec6f061f4715f84cb4d68bb514b133fd1220c75e7c7988a6a7ebb1aaa7ea8eb54a07858a1ffa54cfb6190d9567b9fb45aca6ede3';
 
 export async function verifySpreadsheetPassword(inputPassword: string): Promise<boolean> {

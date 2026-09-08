@@ -17,7 +17,6 @@ export function findMatchingTicket(
     return { ticket: null, matchedBy: null };
   }
 
-  // Check ticket number (e.g., "#3" or "3")
   const ticketNumMatch = q.match(/^#?(\d{1,5})$/);
   if (ticketNumMatch) {
     const num = parseInt(ticketNumMatch[1], 10);
@@ -62,7 +61,6 @@ export function findMatchingTicket(
     }
   }
 
-  // Match by name or representative name
   const byName = tickets.find(t => {
     const normName = normalizeQueryString(t.name);
     const normRep = t.representativeName ? normalizeQueryString(t.representativeName) : '';
@@ -73,7 +71,6 @@ export function findMatchingTicket(
     return { ticket: byName, matchedBy: 'name' };
   }
 
-  // Match by grade/class/attendance (e.g. "3-2-15" or "15")
   const byStudentInfo = tickets.find(t => {
     if (!t.grade && !t.className && !t.attendanceNumber) return false;
     const combined = `${t.grade || ''}${t.className || ''}${t.attendanceNumber || ''}`.replace(/[\s年組番\-]/g, '');
@@ -99,17 +96,14 @@ export function ticketMatchesSearchQuery(t: TicketRecord, rawQuery: string): boo
   const q = normalizeQueryString(rawQuery);
   if (!q) return true;
 
-  // Ticket number check
   if (String(t.ticketNumber).includes(q) || `#${t.ticketNumber}`.includes(q)) {
     return true;
   }
 
-  // Name or representative name
   if (normalizeQueryString(t.name).includes(q)) return true;
   if (t.representativeName && normalizeQueryString(t.representativeName).includes(q)) return true;
   if (t.kana && normalizeQueryString(t.kana).includes(q)) return true;
 
-  // Grade, Class, Attendance number
   if (t.grade && normalizeQueryString(t.grade).includes(q)) return true;
   if (t.className && normalizeQueryString(t.className).includes(q)) return true;
   if (t.attendanceNumber && normalizeQueryString(t.attendanceNumber).includes(q)) return true;
@@ -117,7 +111,6 @@ export function ticketMatchesSearchQuery(t: TicketRecord, rawQuery: string): boo
   const cleanQ = q.replace(/[\s年組番\-]/g, '');
   if (combinedStudent && cleanQ && combinedStudent.includes(cleanQ)) return true;
 
-  // Attribute or Email
   if (t.attribute && normalizeQueryString(t.attribute).includes(q)) return true;
   if (t.email && normalizeQueryString(t.email).includes(q)) return true;
 

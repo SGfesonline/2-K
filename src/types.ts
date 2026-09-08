@@ -46,7 +46,6 @@ export interface TicketRecord {
   notes?: string;
   email?: string;
   kana?: string;
-  // Legacy compatibility fields
   lotteryResult?: string;
   parentalConsentStatus?: 'not_required' | 'submitted' | 'unconfirmed';
   safetyChecklist?: {
@@ -86,7 +85,6 @@ export interface AdminAuthConfig {
   updatedAt: string;
 }
 
-// Backward compatibility types for legacy components
 export type Ticket = TicketRecord;
 export type TicketStatus = QueueStatus;
 
@@ -112,4 +110,3 @@ export interface TicketFormData {
   notes?: string;
   timeSlot?: string;
 }
-

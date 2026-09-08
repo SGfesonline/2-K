@@ -92,7 +92,6 @@ export const LiveQueueBoard: React.FC<LiveQueueBoardProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* 呼出通知メッセージトースト */}
       {recentNotification && (
         <div className="p-3 bg-amber-50 border border-amber-300 rounded-2xl flex items-center justify-between text-xs text-amber-900 shadow-xs animate-fade-in">
           <div className="flex items-center gap-2">
@@ -109,7 +108,6 @@ export const LiveQueueBoard: React.FC<LiveQueueBoardProps> = ({
         </div>
       )}
 
-      {/* コントロールヘッダー & 検索バー */}
       <div className="bg-[#09112d]/90 border border-cyan-500/30 rounded-3xl p-5 sm:p-6 shadow-xl backdrop-blur-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
@@ -128,7 +126,6 @@ export const LiveQueueBoard: React.FC<LiveQueueBoardProps> = ({
         </div>
 
         <div className="flex items-center gap-2.5 flex-wrap">
-          {/* 検索バー */}
           <div className="relative flex-1 sm:w-64">
             <Search className="w-4 h-4 text-cyan-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
@@ -152,7 +149,6 @@ export const LiveQueueBoard: React.FC<LiveQueueBoardProps> = ({
         </div>
       </div>
 
-      {/* 1. 現在お呼出中（Calling）エリア */}
       <div className="bg-pink-950/30 border-2 border-pink-500/40 rounded-3xl p-5 sm:p-6 shadow-xl backdrop-blur-xl space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-pink-500/30">
           <div className="flex items-center gap-3">
@@ -213,7 +209,6 @@ export const LiveQueueBoard: React.FC<LiveQueueBoardProps> = ({
                       </span>
                     </div>
 
-                    {/* 学年・クラス・出席番号 */}
                     <div className="mt-1.5 flex items-center gap-1.5 text-xs font-bold text-cyan-200">
                       <GraduationCap className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
                       <span>
@@ -270,7 +265,6 @@ export const LiveQueueBoard: React.FC<LiveQueueBoardProps> = ({
         )}
       </div>
 
-      {/* 2. 待機中（Waiting）エリア */}
       <div className="bg-[#09112d]/90 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl backdrop-blur-xl space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-slate-800">
           <div className="flex items-center gap-2.5">
@@ -374,9 +368,7 @@ export const LiveQueueBoard: React.FC<LiveQueueBoardProps> = ({
         )}
       </div>
 
-      {/* 3. 体験中・ミッション突入 & 保留 & 帰還完了 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* 体験中・ミッション中 */}
         <div className="bg-[#09112d]/90 border border-cyan-500/30 rounded-3xl p-5 shadow-xl backdrop-blur-xl space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-800">
             <h4 className="font-bold text-white text-xs flex items-center gap-1.5">
@@ -411,7 +403,6 @@ export const LiveQueueBoard: React.FC<LiveQueueBoardProps> = ({
           </div>
         </div>
 
-        {/* 保留・不在 */}
         <div className="bg-[#09112d]/90 border border-amber-500/30 rounded-3xl p-5 shadow-xl backdrop-blur-xl space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-800">
             <h4 className="font-bold text-white text-xs flex items-center gap-1.5">
@@ -448,7 +439,6 @@ export const LiveQueueBoard: React.FC<LiveQueueBoardProps> = ({
           </div>
         </div>
 
-        {/* 地球帰還完了 */}
         <div className="bg-[#09112d]/90 border border-slate-800 rounded-3xl p-5 shadow-xl backdrop-blur-xl space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-800">
             <h4 className="font-bold text-white text-xs flex items-center gap-1.5">

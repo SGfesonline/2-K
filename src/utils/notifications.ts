@@ -5,7 +5,6 @@ export class NotificationManager {
 
   public static async requestPermission(): Promise<NotificationPermission> {
     if (typeof window === 'undefined' || !('Notification' in window)) {
-      console.warn('Notifications not supported in this environment');
       return 'denied';
     }
     try {
@@ -18,8 +17,7 @@ export class NotificationManager {
         );
       }
       return permission;
-    } catch (err) {
-      console.warn('Notification permission request error:', err);
+    } catch {
       return 'denied';
     }
   }
@@ -80,9 +78,7 @@ export class NotificationManager {
         badge: badgeUrl,
         tag: notifTag
       });
-    } catch (err) {
-      console.warn('Local notification error:', err);
-    }
+    } catch {}
   }
 
   public static async sendCallNotification(ticket: TicketRecord): Promise<NotificationLog> {
@@ -102,7 +98,7 @@ export class NotificationManager {
     const log: NotificationLog = {
       id: 'NOTIF-' + Date.now().toString(36) + Math.random().toString(36).substring(2, 5),
       ticketId: ticket.id,
-      recipientEmail: ticket.email,
+      recipientEmail: ticket.email || '',
       recipientName: name,
       title,
       body,

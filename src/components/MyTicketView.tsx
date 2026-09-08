@@ -76,9 +76,8 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
   const [notifSent, setNotifSent] = useState<boolean>(false);
   const [showPwaGuide, setShowPwaGuide] = useState<boolean>(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [isStandalone, setIsStandalone] = useState<boolean>(false);
+  const [, setIsStandalone] = useState<boolean>(false);
 
-  // 端末のPWA検知
   useEffect(() => {
     if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone) {
       setIsStandalone(true);
@@ -112,14 +111,12 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
     }
   };
 
-  // 現在確認（認証）されている整理券
   const currentTicket = useMemo(() => {
     if (!verifiedTicketId) return null;
     const found = tickets.find(t => t.id === verifiedTicketId);
     return found || null;
   }, [tickets, verifiedTicketId]);
 
-  // 呼出時の通知・音声アラート
   const lastAlertRef = React.useRef<{ id: string; status: string; timestamp: number }>({
     id: '',
     status: '',
@@ -155,12 +152,10 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
     }
   }, [currentTicket]);
 
-  // 発行完了時
   const handleTicketIssued = async (newTicket: TicketRecord) => {
     if (onCreateTicket) {
       await onCreateTicket(newTicket);
     }
-    // 発行した本人の整理券として直ちに認証保持
     setVerifiedTicketId(newTicket.id);
     if (typeof window !== 'undefined') {
       localStorage.setItem(STORAGE_VERIFIED_ID_KEY, newTicket.id);
@@ -171,7 +166,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
     setIsIssuingNew(false);
   };
 
-  // パスワードと名前を一致させて開く（照会・確認処理）
   const handleVerifyTicket = (e: React.FormEvent) => {
     e.preventDefault();
     setVerifyError(null);
@@ -190,12 +184,10 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
 
     setIsVerifying(true);
     setTimeout(() => {
-      // 名前とパスワードの一致を確認
       const matched = tickets.find(t => {
         const tName = (t.representativeName || t.name || '').trim().toLowerCase();
         const tPass = (t.accessPassword || '').trim();
 
-        // 柔軟な名前照合 (スペース無視など)
         const cleanTName = tName.replace(/\s+/g, '');
         const cleanInputName = trimmedName.replace(/\s+/g, '');
 
@@ -318,10 +310,9 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
   }
 
   return (
-    <div className="max-w-xl mx-auto space-y-5 px-1 py-2">
+    <div id="queue-section" className="max-w-xl mx-auto space-y-5 px-1 py-2 scroll-mt-24">
       {!currentTicket || isIssuingNew ? (
         <div className="space-y-4">
-            {/* 発行 / 照会 切替タブ */}
           <div className="bg-slate-900/80 p-1.5 rounded-2xl flex items-center gap-1.5 border border-cyan-500/20 backdrop-blur-md shadow-lg">
             <button
               type="button"
@@ -376,7 +367,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
               projectName={projectName}
             />
           ) : (
-            /* パスワードと名前で整理券を開く照会フォーム */
             <div className="relative overflow-hidden rounded-3xl border border-cyan-500/30 bg-[#09112d]/90 p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-6">
               <div className="text-center space-y-2">
                 <div className="inline-flex p-3 rounded-2xl bg-cyan-950/80 border border-cyan-500/40 text-cyan-400 mb-1 shadow-md shadow-cyan-500/20">
@@ -394,7 +384,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
               </div>
 
               <form onSubmit={handleVerifyTicket} className="space-y-4 text-left">
-                {/* 1. お名前 */}
                 <div>
                   <label className="block text-xs font-semibold text-slate-200 mb-1.5 flex items-center gap-1.5">
                     <User className="w-3.5 h-3.5 text-cyan-400" />
@@ -413,7 +402,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
                   />
                 </div>
 
-                {/* 2. 確認用パスワード */}
                 <div>
                   <label className="block text-xs font-semibold text-slate-200 mb-1.5 flex items-center gap-1.5">
                     <Lock className="w-3.5 h-3.5 text-pink-400" />
@@ -471,7 +459,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
             </div>
           )}
 
-          {/* PWA インストール案内 */}
           <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-5 shadow-lg flex items-center justify-between gap-4 backdrop-blur-md">
             <div className="flex items-center gap-3">
               <div className="p-2.5 rounded-2xl bg-cyan-950 text-cyan-400 border border-cyan-500/30 shrink-0">
@@ -537,9 +524,7 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
           )}
         </div>
       ) : (
-        /* 発行・照会済みの整理券画面 */
         <>
-          {/* 上部ステータスバー */}
           <div className="bg-slate-900/80 border border-cyan-500/30 rounded-2xl px-4 py-3 shadow-lg flex items-center justify-between gap-2 text-xs backdrop-blur-md">
             <div className="flex items-center gap-2 min-w-0">
               <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse shrink-0 shadow-sm shadow-cyan-400" />
@@ -578,7 +563,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
             </div>
           </div>
 
-          {/* ネットワーク同期状況 */}
           <div className="flex items-center justify-between px-4 py-2.5 rounded-2xl bg-slate-900/80 border border-slate-800 text-xs shadow-md backdrop-blur-md">
             <div className="flex items-center gap-2">
               {isOnline ? (
@@ -614,13 +598,10 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
             )}
           </div>
 
-          {/* メイン整理券チケットカード (SPACE BOARDING PASS) */}
           <div className="relative overflow-hidden rounded-3xl border-2 border-cyan-500/40 bg-[#09112d]/95 shadow-2xl backdrop-blur-xl">
-            {/* 装飾光 */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-pink-500/15 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none" />
 
-            {/* チケット上部ヘッダー */}
             <div className="bg-gradient-to-r from-slate-900 via-[#101b46] to-slate-900 border-b border-cyan-500/30 p-6 sm:p-7 relative">
               <div className="flex items-start justify-between gap-2">
                 <div>
@@ -645,7 +626,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
                 )}
               </div>
 
-              {/* 整理券番号 */}
               <div className="mt-5 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
                 <div>
                   <span className="text-cyan-300/80 text-xs font-mono uppercase tracking-wider block">
@@ -664,7 +644,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
                 </div>
               </div>
 
-              {/* チケット切取風のダッシュライン */}
               <div className="absolute -bottom-3 left-0 right-0 flex items-center justify-between px-2 pointer-events-none">
                 <div className="w-5 h-5 rounded-full bg-[#040817] -ml-4" />
                 <div className="flex-1 border-b border-dashed border-cyan-500/40 mx-2" />
@@ -672,7 +651,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
               </div>
             </div>
 
-            {/* チケット詳細情報 */}
             <div className="p-6 sm:p-7 space-y-5 relative z-10">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-5 border-b border-slate-800">
                 <div>
@@ -688,7 +666,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
                     <span className="text-sm font-normal text-slate-400">様</span>
                   </div>
 
-                  {/* 学年・クラス・出席番号 */}
                   <div className="mt-2.5 flex items-center gap-1.5 flex-wrap">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900 border border-cyan-500/30 text-cyan-200 text-xs font-bold shadow-xs">
                       <GraduationCap className="w-3.5 h-3.5 text-cyan-400" />
@@ -720,7 +697,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
                 </div>
               </div>
 
-              {/* 呼出・ミッション進行状況 */}
               {statusInfo && (
                 <div className={`p-5 rounded-2xl border ${statusInfo.cardBg} ${statusInfo.borderClass} space-y-3`}>
                   <div className="flex items-center justify-between">
@@ -754,7 +730,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
                 </div>
               )}
 
-              {/* バーコード演出 */}
               <div className="pt-2 flex items-center justify-between border-t border-slate-800/60 opacity-60">
                 <div className="font-mono text-[9px] text-slate-400 tracking-widest">
                   SECTOR-2K // PLANET-ASAHI // ORBIT-2026 // {currentTicket.id.slice(0, 8).toUpperCase()}
@@ -772,7 +747,6 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
             </div>
           </div>
 
-          {/* プッシュ通知設定 */}
           <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-5 shadow-lg space-y-4 backdrop-blur-md">
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -784,7 +758,7 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
                     呼出通知（プッシュ通知）
                   </h4>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    順番が来るとスマホ画面への通知とアラート音でお知らせします
+                    順番が来るとスマホ画面への通知でお知らせします
                   </p>
                 </div>
               </div>
@@ -807,7 +781,7 @@ export const MyTicketView: React.FC<MyTicketViewProps> = ({
             </div>
 
             <div className="flex items-center justify-between pt-3 border-t border-slate-800 text-xs">
-              <span className="text-slate-400">呼出音・通知のテスト:</span>
+              <span className="text-slate-400">通知テスト:</span>
               <button
                 type="button"
                 onClick={handleTestPush}

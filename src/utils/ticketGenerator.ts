@@ -52,7 +52,6 @@ export function createFestivalTicket(
   const trimmedClass = isSchoolStaffOrGuest ? '' : (input.className ? input.className.trim() : '');
   const trimmedNumber = isSchoolStaffOrGuest ? '' : (input.attendanceNumber ? input.attendanceNumber.trim() : '');
   
-  // Format attribute for display
   let studentInfoTag = '';
   if (isSchoolStaffOrGuest) {
     studentInfoTag = trimmedGrade;
@@ -72,7 +71,7 @@ export function createFestivalTicket(
     className: trimmedClass || undefined,
     attendanceNumber: trimmedNumber || undefined,
     accessPassword: input.accessPassword.trim(),
-    projectName: input.projectName || 'クラス企画',
+    projectName: input.projectName || '今日、迷子になりました。～惑星朝日編～',
     timeSlot: getCurrentTimeSlot(),
     scheduledDate: dateStr,
     attendance: 'present',
@@ -83,4 +82,3 @@ export function createFestivalTicket(
     callCount: 0
   };
 }
-

@@ -19,12 +19,11 @@ export const TIME_SLOTS = [
 export const INITIAL_TICKETS: TicketRecord[] = [];
 
 const STORAGE_KEY = 'planet_asahi_tickets_v1';
-const LEGACY_STORAGE_KEY = 'blood_donation_tickets_v4';
 
 export function loadTickets(): TicketRecord[] {
   if (typeof window === 'undefined') return [];
   try {
-    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
       return [];
     }
@@ -39,12 +38,9 @@ export function saveTickets(tickets: TicketRecord[]): void {
   if (typeof window === 'undefined') return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
-  } catch (err) {
-    console.error('Failed to save tickets:', err);
-  }
+  } catch {}
 }
 
 export const SAMPLE_TICKETS = INITIAL_TICKETS;
 export const loadTicketsFromStorage = loadTickets;
 export const saveTicketsToStorage = saveTickets;
-

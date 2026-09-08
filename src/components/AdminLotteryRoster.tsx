@@ -4,7 +4,6 @@ import {
   FileSpreadsheet,
   Users,
   GraduationCap,
-  Clock,
   Lock,
   Megaphone,
   CheckCircle2
@@ -78,7 +77,6 @@ export const AdminLotteryRoster: React.FC<AdminLotteryRosterProps> = ({
 
   return (
     <div className="space-y-4">
-      {/* 統計バー */}
       <div className="bg-[#09112d]/90 rounded-3xl p-5 border border-cyan-500/30 shadow-xl backdrop-blur-xl space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-800">
           <div>
@@ -124,7 +122,6 @@ export const AdminLotteryRoster: React.FC<AdminLotteryRosterProps> = ({
         </div>
       </div>
 
-      {/* 検索 & フィルターバー */}
       <div className="bg-[#09112d]/90 rounded-2xl p-3 border border-slate-800 shadow-xl backdrop-blur-xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-cyan-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -185,7 +182,6 @@ export const AdminLotteryRoster: React.FC<AdminLotteryRosterProps> = ({
         </div>
       </div>
 
-      {/* テーブル本体 */}
       <div className="bg-[#09112d]/90 rounded-3xl border border-slate-800 shadow-xl backdrop-blur-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">

@@ -17,7 +17,7 @@ export function normalizeTimeSlot(rawSlot: string): { slot: string; originalNote
 
     let originalNote: string | undefined;
     if (minutes !== 0 && minutes !== 30) {
-      originalNote = `予約希望時刻: ${clean}`;
+      originalNote = `希望時刻: ${clean}`;
     }
 
     return { slot, originalNote };
@@ -44,7 +44,7 @@ export function parseCSVToTickets(csvText: string): TicketRecord[] {
   const headers = parseCSVLine(headerLine, delimiter);
 
   let numIdx = headers.findIndex(h => h.includes('番号') || h.includes('number') || h.includes('no') || h.includes('id'));
-  let nameIdx = headers.findIndex(h => h.includes('名前') || h.includes('氏名') || h.includes('name') || h.includes('受診者') || h.includes('生徒'));
+  let nameIdx = headers.findIndex(h => h.includes('名前') || h.includes('氏名') || h.includes('name') || h.includes('代表者') || h.includes('生徒'));
   let emailIdx = headers.findIndex(h => h.includes('メアド') || h.includes('メール') || h.includes('email') || h.includes('mail') || h.includes('アドレス'));
   let slotIdx = headers.findIndex(h => h.includes('時間') || h.includes('スロット') || h.includes('slot') || h.includes('予約') || h.includes('time'));
   let attrIdx = headers.findIndex(h => h.includes('属性') || h.includes('区分') || h.includes('所属') || h.includes('役職') || h.includes('role') || h.includes('attribute') || h.includes('type'));
@@ -109,7 +109,7 @@ export function parseCSVToTickets(csvText: string): TicketRecord[] {
     }
     usedNumbers.add(finalNum);
 
-    const name = (nameIdx >= 0 && cols[nameIdx]) ? cols[nameIdx].trim() : `受診者${finalNum}`;
+    const name = (nameIdx >= 0 && cols[nameIdx]) ? cols[nameIdx].trim() : `来場者${finalNum}`;
     const email = (emailIdx >= 0 && cols[emailIdx]) ? cols[emailIdx].trim() : '';
     
     const rawSlot = (slotIdx >= 0 && cols[slotIdx]) ? cols[slotIdx].trim() : '09:30';
@@ -140,13 +140,13 @@ export function parseCSVToTickets(csvText: string): TicketRecord[] {
       queueStatus = 'called';
     } else if (cleanAttendance.includes('案内中') || cleanAttendance.includes('入場中') || cleanAttendance.includes('interview')) {
       attendance = 'absent';
-      queueStatus = 'interview';
+      queueStatus = 'in_progress';
     } else if (cleanAttendance.includes('体験中') || cleanAttendance.includes('進行中') || cleanAttendance.includes('donating')) {
       attendance = 'absent';
-      queueStatus = 'donating';
-    } else if (cleanAttendance.includes('保留') || cleanAttendance.includes('resting')) {
+      queueStatus = 'in_progress';
+    } else if (cleanAttendance.includes('保留') || cleanAttendance.includes('resting') || cleanAttendance.includes('on_hold')) {
       attendance = 'absent';
-      queueStatus = 'resting';
+      queueStatus = 'on_hold';
     } else if (cleanAttendance.includes('キャンセル') || cleanAttendance.includes('cancel')) {
       attendance = 'absent';
       queueStatus = 'absent';
@@ -220,6 +220,7 @@ export function exportTicketsToCSV(tickets: TicketRecord[]): string {
     interview: '惑星突入中',
     donating: 'ミッション進行中',
     resting: '休憩中',
+    on_hold: '保留中',
     done: '帰還完了',
     absent: '不在/取消'
   };
@@ -271,6 +272,7 @@ export function exportTicketsToTSV(tickets: TicketRecord[]): string {
     interview: '惑星突入中',
     donating: 'ミッション中',
     resting: '休憩中',
+    on_hold: '保留中',
     done: '帰還完了',
     absent: '不在/取消'
   };
@@ -437,7 +439,7 @@ export async function fetchGoogleSheetCSV(sheetUrl: string): Promise<TicketRecor
 
   const tickets = parseCSVToTickets(text);
   if (tickets.length === 0) {
-    throw new Error('取得したURLに有効な受診者データ行が見つかりませんでした。');
+    throw new Error('取得したURLに有効なデータ行が見つかりませんでした。');
   }
   return tickets;
 }

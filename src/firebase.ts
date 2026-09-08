@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { 
   getAuth, 
-  signInAnonymously,
   signOut as fbSignOut,
   onAuthStateChanged,
   User
@@ -280,8 +279,6 @@ export async function logoutAdmin(): Promise<void> {
   if (typeof window !== 'undefined') {
     sessionStorage.removeItem('asahi_admin_auth');
     localStorage.removeItem('asahi_admin_auth');
-    sessionStorage.removeItem('blood_donation_admin_auth');
-    localStorage.removeItem('blood_donation_admin_auth');
   }
   try {
     await fbSignOut(auth);
@@ -291,9 +288,7 @@ export async function logoutAdmin(): Promise<void> {
 export function checkIsAdminLoggedIn(): boolean {
   if (typeof window === 'undefined') return false;
   return sessionStorage.getItem('asahi_admin_auth') === 'true' || 
-         localStorage.getItem('asahi_admin_auth') === 'true' ||
-         sessionStorage.getItem('blood_donation_admin_auth') === 'true' || 
-         localStorage.getItem('blood_donation_admin_auth') === 'true';
+         localStorage.getItem('asahi_admin_auth') === 'true';
 }
 
 export function subscribeAuthSession(callback: (user: User | null, isAdminSession: boolean) => void): Unsubscribe {

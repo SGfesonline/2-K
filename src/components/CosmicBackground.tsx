@@ -21,7 +21,6 @@ export const CosmicBackground: React.FC = () => {
 
     window.addEventListener('resize', handleResize);
 
-    // 星の生成
     const starCount = Math.min(180, Math.floor((width * height) / 8000));
     const stars: Array<{
       x: number;
@@ -47,7 +46,6 @@ export const CosmicBackground: React.FC = () => {
       });
     }
 
-    // 流れ星 (Shooting star)
     let shootingStar: {
       x: number;
       y: number;
@@ -83,7 +81,6 @@ export const CosmicBackground: React.FC = () => {
       tick++;
       ctx.clearRect(0, 0, width, height);
 
-      // 深宇宙グラデーション
       const bgGrad = ctx.createLinearGradient(0, 0, width * 0.5, height);
       bgGrad.addColorStop(0, '#030718');
       bgGrad.addColorStop(0.5, '#070f2b');
@@ -91,7 +88,6 @@ export const CosmicBackground: React.FC = () => {
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
-      // コズミック星雲（Nebula）光輪
       const nebula1 = ctx.createRadialGradient(width * 0.8, height * 0.2, 20, width * 0.8, height * 0.2, 450);
       nebula1.addColorStop(0, 'rgba(255, 42, 133, 0.14)');
       nebula1.addColorStop(0.5, 'rgba(99, 102, 241, 0.08)');
@@ -106,9 +102,7 @@ export const CosmicBackground: React.FC = () => {
       ctx.fillStyle = nebula2;
       ctx.fillRect(0, 0, width, height);
 
-      // 星々の描画
       stars.forEach((star) => {
-        // 瞬き
         star.alpha += Math.sin(tick * star.twinkleSpeed) * 0.02;
         if (star.alpha > 1) star.alpha = 1;
         if (star.alpha < 0.2) star.alpha = 0.2;
@@ -123,7 +117,6 @@ export const CosmicBackground: React.FC = () => {
         ctx.shadowBlur = 0;
       });
 
-      // 流れ星の描画
       if (shootingStar && shootingStar.active) {
         ctx.globalAlpha = shootingStar.opacity;
         ctx.strokeStyle = 'rgba(255, 255, 255, ' + shootingStar.opacity + ')';

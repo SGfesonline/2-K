@@ -17,7 +17,8 @@ import {
   subscribeToSyncSettings,
   subscribeAuthSession,
   logoutAdmin,
-  SyncSettings
+  SyncSettings,
+  checkIsAdminLoggedIn
 } from './firebase';
 import { WifiOff, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { useNetworkSync } from './hooks/useNetworkSync';
@@ -37,7 +38,7 @@ import { LoadingScreen } from './components/LoadingScreen';
 
 export const App: React.FC = () => {
   const [tickets, setTickets] = useState<TicketRecord[]>(() => loadTicketsFromStorage());
-  const [isAdminMode, setIsAdminMode] = useState<boolean>(false);
+  const [isAdminMode, setIsAdminMode] = useState<boolean>(() => checkIsAdminLoggedIn());
   const [isAdminAuthOpen, setIsAdminAuthOpen] = useState<boolean>(false);
   const [adminTab, setAdminTab] = useState<AdminTabType>('queue');
   const [isFirebaseConnected, setIsFirebaseConnected] = useState<boolean>(false);
@@ -206,8 +207,7 @@ export const App: React.FC = () => {
   const completedCount = tickets.filter(t => t.queueStatus === 'done').length;
 
   return (
-    <div className="min-h-screen bg-[#040817] text-slate-100 flex flex-col font-sans selection:bg-pink-600 selection:text-white relative overflow-x-hidden">
-      {/* 宇宙の星空キャンバス背景 */}
+    <div className="min-h-screen bg-[#040817] text-slate-100 flex flex-col font-sans selection:bg-pink-600 selection:text-white relative overflow-x-clip">
       <CosmicBackground />
 
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -217,7 +217,11 @@ export const App: React.FC = () => {
             if (!mode) {
               handleExitAdminMode();
             } else {
-              setIsAdminMode(true);
+              if (checkIsAdminLoggedIn()) {
+                setIsAdminMode(true);
+              } else {
+                setIsAdminAuthOpen(true);
+              }
             }
           }}
           adminTab={adminTab}
@@ -279,15 +283,13 @@ export const App: React.FC = () => {
             <LoadingScreen onSkip={() => setIsInitialLoading(false)} />
           ) : !isAdminMode ? (
             <div className="space-y-12">
-              {/* 1. ポスター世界観・アトラクション紹介・ミッションストーリーセクション */}
               <AttractionInfoSection
                 onGoToTicket={scrollToTicketSection}
                 waitingCount={waitingCount}
                 callingCount={callingCount}
               />
 
-              {/* 2. 整理券発行・確認（開く）セクション */}
-              <div ref={ticketSectionRef} className="pt-4 scroll-mt-24">
+              <div id="ticket-section" ref={ticketSectionRef} className="pt-4 scroll-mt-24">
                 <div className="text-center mb-6 space-y-1">
                   <span className="text-[11px] font-mono tracking-widest text-cyan-400 uppercase">
                     ENTRY PASS REGISTRATION
@@ -380,4 +382,3 @@ export const App: React.FC = () => {
 };
 
 export default App;
-

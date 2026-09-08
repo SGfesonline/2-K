@@ -3,14 +3,12 @@ import {
   X, 
   Send, 
   CheckCircle2, 
-  AlertCircle, 
   Megaphone,
   PauseCircle, 
   Users,
   GraduationCap,
   Lock,
-  Clock,
-  Ticket
+  Clock
 } from 'lucide-react';
 import { TicketRecord, QueueStatus } from '../types';
 import { NotificationManager } from '../utils/notifications';
@@ -60,7 +58,6 @@ export const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#040817]/80 backdrop-blur-md animate-fade-in">
       <div className="bg-[#09112d] border border-cyan-500/40 rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden animate-scale-in">
-        {/* ヘッダー */}
         <div className="bg-gradient-to-r from-cyan-950 via-[#0b163b] to-pink-950 text-white p-5 flex items-center justify-between border-b border-cyan-500/30">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-cyan-500/20 border border-cyan-400/50 flex items-center justify-center font-mono font-black text-xl text-cyan-300 shadow-md shadow-cyan-500/20">
@@ -88,7 +85,6 @@ export const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
         </div>
 
         <div className="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
-          {/* 基本情報グリッド */}
           <div className="grid grid-cols-2 gap-3 p-4 bg-slate-900/90 border border-slate-800 rounded-2xl text-xs">
             <div>
               <span className="text-slate-400 block text-[11px]">学年・クラス・出席番号</span>
@@ -123,7 +119,6 @@ export const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
             </div>
           </div>
 
-          {/* ステータス切替ボタン */}
           <div>
             <label className="block text-xs font-bold text-slate-300 mb-2">
               ミッション進行ステータスの変更
@@ -204,7 +199,6 @@ export const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
             </div>
           </div>
 
-          {/* 通知送信テスト */}
           <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center justify-between gap-3 text-xs">
             <div>
               <span className="font-bold text-white block">呼出アラートの直接通信</span>

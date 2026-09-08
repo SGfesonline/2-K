@@ -9,9 +9,7 @@ import {
   CheckCheck, 
   CheckCircle2, 
   Table, 
-  Users, 
-  Sparkles,
-  ExternalLink
+  Sparkles
 } from 'lucide-react';
 
 interface SpreadsheetSyncModalProps {
@@ -31,13 +29,11 @@ export const SpreadsheetSyncModal: React.FC<SpreadsheetSyncModalProps> = ({
 
   if (!isOpen) return null;
 
-  // 統計集計
   const totalTickets = tickets.length;
   const totalPeople = tickets.reduce((acc, t) => acc + (t.numberOfPeople || 1), 0);
   const completedCount = tickets.filter(t => t.queueStatus === 'done').length;
   const waitingCount = tickets.filter(t => t.queueStatus === 'waiting').length;
 
-  // CSVダウンロード処理（UTF-8 with BOM for Excel/Sheets）
   const handleDownloadCSV = () => {
     const csvContent = exportTicketsToCSV(tickets);
     const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
@@ -57,7 +53,6 @@ export const SpreadsheetSyncModal: React.FC<SpreadsheetSyncModalProps> = ({
     setTimeout(() => setDownloadSuccess(false), 3000);
   };
 
-  // スプレッドシート用コピー処理（TSV）
   const handleCopyTSV = async () => {
     try {
       const tsvContent = exportTicketsToTSV(tickets);
@@ -65,7 +60,6 @@ export const SpreadsheetSyncModal: React.FC<SpreadsheetSyncModalProps> = ({
       setCopied(true);
       setTimeout(() => setCopied(false), 3000);
     } catch {
-      // フォールバック
       const textarea = document.createElement('textarea');
       textarea.value = exportTicketsToTSV(tickets);
       document.body.appendChild(textarea);
@@ -86,7 +80,6 @@ export const SpreadsheetSyncModal: React.FC<SpreadsheetSyncModalProps> = ({
         className="bg-[#09112d] rounded-3xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl border border-emerald-500/40 relative space-y-5 backdrop-blur-xl max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* ヘッダー */}
         <div className="flex items-center justify-between pb-3 border-b border-slate-800">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-md">
@@ -113,7 +106,6 @@ export const SpreadsheetSyncModal: React.FC<SpreadsheetSyncModalProps> = ({
           </button>
         </div>
 
-        {/* 統計サマリーバッジ */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
           <div className="p-3 rounded-2xl bg-slate-900/90 border border-slate-800">
             <span className="text-[11px] text-slate-400 block">総発券組数</span>
@@ -133,7 +125,6 @@ export const SpreadsheetSyncModal: React.FC<SpreadsheetSyncModalProps> = ({
           </div>
         </div>
 
-        {/* 出力ボタングループ */}
         <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
@@ -146,7 +137,6 @@ export const SpreadsheetSyncModal: React.FC<SpreadsheetSyncModalProps> = ({
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* CSVダウンロード */}
             <button
               type="button"
               onClick={handleDownloadCSV}
@@ -166,7 +156,6 @@ export const SpreadsheetSyncModal: React.FC<SpreadsheetSyncModalProps> = ({
               )}
             </button>
 
-            {/* スプレッドシート用コピー */}
             <button
               type="button"
               onClick={handleCopyTSV}
@@ -194,7 +183,6 @@ export const SpreadsheetSyncModal: React.FC<SpreadsheetSyncModalProps> = ({
           </p>
         </div>
 
-        {/* 出力データプレビュー表 */}
         <div className="flex-1 overflow-hidden flex flex-col space-y-2">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span className="flex items-center gap-1.5 font-bold text-slate-300">
@@ -245,7 +233,6 @@ export const SpreadsheetSyncModal: React.FC<SpreadsheetSyncModalProps> = ({
           </div>
         </div>
 
-        {/* フッター */}
         <div className="pt-2 flex items-center justify-end">
           <button
             type="button"
